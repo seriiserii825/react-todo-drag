@@ -1,24 +1,26 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import type { Todo } from "../models";
 import { AiFillDelete, AiFillEdit } from "react-icons/ai";
 import { MdDone } from "react-icons/md";
+import type { Actions } from "../types/Actions";
 
 interface Props {
   todo: Todo;
-  todos: Todo[];
-  setTodos: React.Dispatch<React.SetStateAction<Todo[]>>;
+  dispatch: React.Dispatch<Actions>;
 }
 
-export const SingleTodo: React.FC<Props> = ({ todo, todos, setTodos }) => {
+export const SingleTodo: React.FC<Props> = ({ todo, dispatch }) => {
   const [isEdit, setIsEdit] = useState(false);
   const [editedTodo, setEditedTodo] = useState(todo.todo);
 
+  const inputRef = React.useRef<HTMLInputElement>(null);
+
   function handleDone(id: number) {
-    setTodos(todos.map((todo) => (todo.id === id ? { ...todo, isDone: !todo.isDone } : todo)));
+    dispatch({ type: "toggleDone", payload: id });
   }
 
   function handleDelete(id: number) {
-    setTodos(todos.filter((todo) => todo.id !== id));
+    dispatch({ type: "delete", payload: id });
   }
 
   function handleEdit() {
@@ -27,18 +29,30 @@ export const SingleTodo: React.FC<Props> = ({ todo, todos, setTodos }) => {
     }
   }
 
-  function handleBlur() {
+  useEffect(() => {
+    if (isEdit) {
+      inputRef.current?.focus();
+    }
+  }, [isEdit]);
+
+  function handleBlur(e: React.FormEvent) {
+    e.preventDefault();
     setIsEdit(false);
-    setTodos(todos.map((t) => (t.id === todo.id ? { ...t, todo: editedTodo } : t)));
+    if (editedTodo.trim() !== "") {
+      dispatch({ type: "edit", payload: { id: todo.id, todo: editedTodo } });
+    } else {
+      setEditedTodo(todo.todo);
+    }
   }
 
   return (
-    <form className="todos__single">
+    <form className="todos__single" onSubmit={(e) => handleBlur(e)}>
       {todo.isDone ? (
         <s className="todos__single-text">{todo.todo}</s>
       ) : isEdit ? (
         <input
           type="text"
+          ref={inputRef}
           className="todos__single-text"
           name="edit"
           value={editedTodo}
