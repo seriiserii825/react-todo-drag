@@ -13,6 +13,8 @@ export function todoReducer(state: Todo[], action: Actions): Todo[] {
       );
     case "toggleDone":
       return state.map((t) => (t.id === action.payload ? { ...t, isDone: !t.isDone } : t));
+    case "reorder":
+      return action.payload;
     default:
       return state;
   }
