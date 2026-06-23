@@ -13,15 +13,19 @@ export const TodoList: React.FC<Props> = ({ todos, dispatch }) => {
     <div className="todos__container">
       <div className="todos">
         <span className="todos__heading">Active Tasks</span>
-        {todos.map((todo) => (
-          <SingleTodo key={todo.id} todo={todo} dispatch={dispatch} />
-        ))}
+        {todos
+          .filter((todo) => !todo.isDone)
+          .map((todo) => (
+            <SingleTodo key={todo.id} todo={todo} dispatch={dispatch} />
+          ))}
       </div>
       <div className="todos todos--completed">
         <span className="todos__heading">Completed Tasks</span>
-        {todos.map((todo) => (
-          <SingleTodo key={todo.id} todo={todo} dispatch={dispatch} />
-        ))}
+        {todos
+          .filter((todo) => todo.isDone)
+          .map((todo) => (
+            <SingleTodo key={todo.id} todo={todo} dispatch={dispatch} />
+          ))}
       </div>
     </div>
   );
