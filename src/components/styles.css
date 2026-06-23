@@ -40,21 +40,38 @@
   box-shadow: 0 0 5px black;
 }
 
-.todos {
+.todos__container {
   display: flex;
-  justify-content: space-evenly;
+  justify-content: space-between;
+  gap: 16px;
+  margin-top: 30px;
+  width: 100%;
+}
+.todos {
   width: 90%;
-  flex-wrap: wrap;
+  padding: 20px;
+  background: #8accf7;
+}
+.todos--completed {
+  background: #a3f7a3;
+}
+.todos__heading {
+  font-size: 20px;
+  text-align: center;
 }
 .todos__single {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  width: 29.5%;
   border-radius: 5px;
   padding: 20px;
   margin-top: 15px;
   background: gold;
+  transition: all 0.4s;
+}
+
+.todos__single:hover {
+  cursor: pointer;
+  transform: scale(1.01);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
 }
 .todos__wrap {
   display: flex;
