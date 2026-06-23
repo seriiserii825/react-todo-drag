@@ -9,6 +9,10 @@
   background-color: #2f74c0;
   font-family: "Neucha", cursive;
 }
+.App__wrapper {
+  max-width: 900px;
+  width: 100%;
+}
 
 .heading {
   text-transform: uppercase;
